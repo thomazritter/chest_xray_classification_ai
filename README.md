@@ -1,37 +1,37 @@
 # Chest X-ray Classification
- Classificação de imagens de exames de Raio-x torácico utilizando CNN e Resnet-50
+ Image classification of chest X-ray exams using CNN and Resnet-50
 
-## Autores 
- Nomes: Thomaz Justo, Yuri Kiefer Alves, Lucas Schneider e Thomas Sponchiado
+## Authors 
+ Names: Thomaz Justo, Yuri Kiefer Alves, Lucas Schneider, and Thomas Sponchiado
 
-## Introdução
+## Introduction
 
- Este relatório apresenta o desenvolvimento de um pipeline de aprendizado de máquina para a tarefa de classificação de imagens utilizando redes neurais convolucionais (CNNs) e Resnet-50. Foi escolhido um conjunto de dados onde temos a radiografia de pacientes com COVID-19.
+ This report presents the development of a machine learning pipeline for the task of image classification using convolutional neural networks (CNNs) and Resnet-50. A dataset containing radiographs of COVID-19 patients was chosen.
 
- O objetivo deste trabalho é explorar as técnicas de aprendizado de máquina e compreender os desafios inerentes à classificação de imagens. 
+ The objective of this work is to explore machine learning techniques and understand the inherent challenges in image classification.
 
- Durante o processo, foram realizadas etapas de modelagem dos problemas, implementação das CNN & Resnet-50 utilizando o Keras, treinamento das redes neurais com os respectivos conjuntos de dados, otimização de hiperparâmetros e análise dos resultados obtidos.
+ Throughout the process, steps were taken to model the problems, implement CNN & Resnet-50 using Keras, train the neural networks with the respective datasets, optimize hyperparameters, and analyze the obtained results.
 
-## Metodologia
+## Methodology
 
- Para desenvolver o pipeline de aprendizado de máquina, algumas etapas foram seguidas:
+ To develop the machine learning pipeline, several steps were followed:
 
- - escolha dos datasets e seus pré-processamentos
- - definição inicial da arquitetura da rede
- - definição das funções de ativação e de erro
- - escolha dos otimizadores.
-
+ - Selection of datasets and their preprocessing
+ - Initial network architecture definition
+ - Definition of activation and error functions
+ - Selection of optimizers
+ 
 ## Dataset
 
- Para treinar as redes neurais foi utilizado o dataset "COVID-19 Radiography Database", encontrado no repositório do Kaggle (https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database), que possuí 21165 imagens com resolução de 299x299 pixels e possui como features as próprias imagens de raio-x e uma máscara de segmentação somente para os pulmões em cada imagem.
+ To train the neural networks, the "COVID-19 Radiography Database" dataset was used, found on the Kaggle repository (https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database). It contains 21,165 images with a resolution of 299x299 pixels and features X-ray images along with segmentation masks for the lungs in each image.
 
- Os rótulos utilizados pelo dataset para classificar as imagens são: COVID, Lung_Opacity, Viral Pneumonia e Normal. Esta separação está inserida no nome do arquivo de cada imagem e este será o objetivo de classificação da CNN e o modelo Resnet-50 utilizados.
+ The labels used by the dataset to classify the images are: COVID, Lung_Opacity, Viral Pneumonia, and Normal. This separation is embedded in the filename of each image, and this will be the classification objective of the CNN and the Resnet-50 model used.
 
 ## Setup
 
- - Para utilizar o algoritmo é necessário realizar o download do dataset, disponível em: https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
- - Mova o arquivo .zip baixado para a pasta do arquivo .py, para ser acessado pelo algoritmo
- - Caso não instaladas, instale as seguintes dependências:
+ - To use the algorithm, download the dataset available at: https://www.kaggle.com/datasets/tawsifurrahman/covid19-radiography-database
+ - Move the downloaded .zip file to the folder containing the .py file to be accessed by the algorithm
+ - If not installed, install the following dependencies:
  ```sh
  keras
  numpy
@@ -44,127 +44,127 @@
  tensorflow
  ```
 
-## Modelos utilizados
+## Models Used
 
- ### Pré processamento de dados
+ ### Data Preprocessing
 
-  A entrada dos dados no modelo pode ser realizada com os pixels da imagem ou features retiradas das imagens.
+  The input data for the model can be either the image pixels or features extracted from the images.
 
-  Nesse caso foram usados apenas os pixels da imagem para a entrada das redes neurais.
+ In this case, only the image pixels were used as input for the neural networks.
 
-  O pré-processamento realizado deixo todas as imagens em escala de cinza, diminuindo a complexidade do processamento da rede de 3 canais para um canal e todas foram redimensionadas para 224x224 pra servir tanto na CNN como na Resnet-50 pré-treinada.
+ The preprocessing converted all images to grayscale, reducing the processing complexity from 3 channels to one, and all were resized to 224x224 to be compatible with both the CNN and the pre-trained Resnet-50.
 
-  As classes foram retiradas diretamente da imagem, por meio da pasta que estão presentes e ocorreu um pré-processamento dos labels, que foram substituídos por números, para que pudessem ser usados nas redes neurais.
+ The classes were extracted directly from the image by their folder names and underwent label preprocessing, replacing them with numbers to be used in the neural networks.
 
- ### Coleta de imagens do dataset
+ ### Image Collection from the Dataset
 
-  As imagens do dataset foram organizadas em pastas, cada uma contendo as fotos da respectiva patologia, portanto é necessário retirar estas imagens das pastas e inseri-las em uma lista, onde poderão ser reorganizadas e receberão a classe, para sua futura classificação.
+  The images from the dataset were organized into folders, each containing photos of the respective pathology. Therefore, it is necessary to extract these images from the folders and insert them into a list, where they can be reorganized and assigned a class for future classification.
 
- ### Coleta de classes por meio das imagens
+ ### Class Collection from the Images
 
-  Após a organização do dataset, este pode ser separado em teste e treino para que possa ser geradas as métricas de forma correta posteriormente.
+  After organizing the dataset, it can be split into training and testing sets to generate metrics correctly later.
 
-  As classes das imagens foram convertidas de strings para números de forma que a CNN possa identificar estes labels.
+ The image classes were converted from strings to numbers so that the CNN could identify these labels.
 
- ### Randomização dos indices
+ ### Index Randomization
 
-  Para melhor separar o dataset em treino e teste, os índices das imagens e classes foram reorganizados de forma aleatória e após isso foram separados os dados em treino e teste para serem testados na CNN e Resnet
+  To better separate the dataset into training and testing sets, the image indices and classes were randomly reorganized. After that, the data were split into training and testing sets to be tested on the CNN and Resnet.
 
-## Arquitetura de rede CNN
+## CNN Architecture
 
-### Entrada de dados
+### Data Input
 
-Redes neurais convolucionais, ou CNNs, são algoritmos de Deep Learning muito utilizados para classificação e reconhecimento de imagens com pouco ou em alguns casos nenhum pré-processamento.
+Convolutional neural networks (CNNs) are deep learning algorithms widely used for image classification and recognition with little or sometimes no preprocessing.
 
-Assim como MLPs, são formados por neurônios que captam e processam a informação da camada anterior e repassam para a próxima camada de neurônios, porém o modelo escaneia as imagens com um kernel e realiza a convolução dos valores.
+Like MLPs, they consist of neurons that capture and process information from the previous layer and pass it on to the next layer of neurons. However, the model scans the images with a kernel and performs convolution on the values.
 
-No caso da rede utilizada, a entrada de dados serão os pixels de cada imagem em formato 224x224 em escala de cinza.
+In the network used, the data input consists of the pixels of each image in 224x224 grayscale format.
 
-### Camadas de convolução
+### Convolution Layers
 
-As camadas seguintes são camadas de convolução, ocultas, que irão extrair features e padrões da imagem de entrada a partir do uso dos kernels (filtros), que realizam o produto escalar dos valores da imagem para formar uma nova imagem.
+The following layers are hidden convolution layers that extract features and patterns from the input image using kernels (filters), performing the dot product of the image values to form a new image.
 
-As CNN possuem uma certa arbitrariedade no número de camadas de convolução utilizada, portanto este valor pode ser ajustado de forma a se adequar melhor ao problema proposto.
+CNNs have a certain arbitrariness in the number of convolution layers used, so this value can be adjusted to better suit the proposed problem.
 
-### Camadas de pooling
+### Pooling Layers
 
-Em seguida existem camadas de pooling, que tem como objetivo diminuir a quantidade de informação da imagem para simplificar seu processamento.
-Os métodos utilizados podem ser por Max pooling, quando é escolhido o maior ponto da vizinhança para ser representado na imagem reduzida, ou o Average pooling, quando é realizada a média dos valores da vizinhança e este valor será representado na imagem simplificada.
+Next, there are pooling layers, which aim to reduce the amount of information in the image to simplify its processing.
+Methods used can be Max pooling, where the highest point in the neighborhood is chosen to be represented in the reduced image, or Average pooling, where the average values of the neighborhood are calculated and this value represents the simplified image.
 
-### Camada MLP de classificação
+### MLP Classification Layer
 
-No final do modelo, camadas de neurônios totalmente conectados (MLPs) são utilizados para classificar a imagem e apresentar a classificação encontrada pelo modelo.
+At the end of the model, fully connected neuron layers (MLPs) are used to classify the image and present the classification found by the model.
 
-### Funções de ativação
+### Activation Functions
 
-Utilizado para algoritmos complexos por conta da sua não-linearidade, onde algoritmos lineares não seriam capazes de realizar a tarefa.
+Used for complex algorithms due to their non-linearity, where linear algorithms would not be able to perform the task.
 
-São funções que realizam operações matemáticas ativando ou não neurônios de uma camada com base nas informações de camadas anteriores, fazendo com que a saída seja ligeiramente diferente da época anterior mas sem perder os resultados bons gerados pela alteração dos pesos dos neurônios.
+These functions perform mathematical operations to activate or deactivate neurons in a layer based on information from previous layers, causing the output to be slightly different from the previous epoch but without losing the good results generated by altering the weights of the neurons.
 
-As funções mais utilizadas são: Linear, Sigmoid, Tanh,  ReLU e Softmax
+The most used functions are: Linear, Sigmoid, Tanh, ReLU, and Softmax.
 
-### Funções de erro
+### Error Functions
 
-São responsáveis por medir as diferenças entre os resultados previstos pelo mmodelo e os resultados reais adquiridos a partir do dataset.
+These measure the differences between the model's predicted results and the actual results obtained from the dataset.
 
-Funções como categorical crossentropy ou sparse categorical crossentropy são utilizados para problemas multiclasse, enquanto binary crossentropy é utilizado para categorias binárias e o erro quadrático ou absoluto é usado para problemas de regressão.
+Functions such as categorical crossentropy or sparse categorical crossentropy are used for multiclass problems, while binary crossentropy is used for binary categories, and squared or absolute error is used for regression problems.
 
-Para funções multiclasse essa perda é calculada com base no número de referências no lote (batch) e a quantidade de respostas corretas que o modelo previu
+For multiclass functions, this loss is calculated based on the number of references in the batch and the number of correct responses predicted by the model.
 
-### Otimizadores
+### Optimizers
 
-São algoritmos que auxiliam o processo de aprendizado ajustando os pesos dos neurônios nas camadas do modelo e podem alterar o coeficiente de aprendizado, para que se torne mais lento conforme converge ao ponto ótimo, impedindo que este ultrapasse o ponto ideal e gere novos erros.
+These are algorithms that assist the learning process by adjusting the weights of neurons in the model layers and can alter the learning rate to become slower as it converges to the optimal point, preventing it from overshooting the ideal point and generating new errors.
 
-Alguns exemplos são: Adam, Adagrad e RMSprop que possuem mesma ideia de alterar a taxa de aprendizado conforme os gradientes passados porém com pequenas diferenças no modo colo lidam com taxas de aprendizado muito pequenas.
+Examples include Adam, Adagrad, and RMSprop, which have the same idea of altering the learning rate based on past gradients but with slight differences in how they handle very small learning rates.
 
-Exemplos como SDG e Momentum atualizam os pesos com base os gradientes porém de maneira também um pouco diferente, tornando um mais rápido que o outro, porém aumentando os ruídos.
+Examples like SGD and Momentum update the weights based on gradients but in slightly different ways, making one faster than the other, but increasing noise.
 
-## Treinamento do modelo CNN
+## CNN Model Training
 
-No treinamento da CNN, o modelo recebe as imagens no formato pré-determinado, realiza as convoluções com cada imagem e para tomada de decisão possui um número de referências aos quais vai basear sua escolha.
+During CNN training, the model receives the images in the predetermined format, performs convolutions with each image, and makes decisions based on a number of references.
 
-O processo é repetido pelo número de épocas determinado no início do teste e a cada época o valor dos pesos dos neurônios são ajustados pelo otimizador, também determinado ao início do teste, para reduzir as perdas do modelo na predição de imagens.
+The process is repeated for the number of epochs determined at the beginning of the test, and at each epoch, the weights of the neurons are adjusted by the optimizer, also determined at the beginning of the test, to reduce the model's losses in image prediction.
 
-Foram realizados testes para cada rede, onde são exploradas no mínimo três variações de: número de camadas, quantidade de neurônios por camada, tipos de funções de ativação, funções de erro e otimizadores. Dessa maneira, planeja-se executar no mínimo 30 experimentos distintos.
+Tests were performed for each network, exploring at least three variations of: number of layers, number of neurons per layer, types of activation functions, error functions, and optimizers. This way, at least 30 different experiments are planned.
 
-### Resultados
+### Results
 
-Obtivemos um bom resultado utilizando a rede CNN, sendo a acurácia de 93% e o loss de 0.33
+We obtained good results using the CNN, with an accuracy of 93% and a loss of 0.33.
 
-## Arquitetura de rede Resnet-50
+## Resnet-50 Architecture
 
-A partir do modelo de CNN pode ser inferido outros modelos, como a Resnet-50 (que vem do nome Residual Network) e que é bem semelhante a ultima apresentada, com exceção do número de camadas de convolução, que nesse caso são 48 camadas, que somadas a uma camada de Max pooling e uma camada de Average pooling formam 50 camadas, dando nome ao modelo.
+From the CNN model, other models can be inferred, such as Resnet-50 (Residual Network), which is very similar to the previous one, except for the number of convolution layers, which in this case are 48 layers. Adding a Max pooling layer and an Average pooling layer makes up 50 layers, giving the model its name.
 
-Este modelo é o sucessor da rede Resnet-34 (já sucessora do modelo VGG 16 e 19), que como o nome diz, possuia 34 camadas com neurônios de pesos diferentes e possuia a capacidade de pular camadas de neurônios quando necessário e assim se tornando uma rede residual e não mais uma rede convolucional padrão.
+This model is the successor to the Resnet-34 network (itself a successor to the VGG 16 and 19 models), which had 34 layers with neurons of different weights and the ability to skip neuron layers when necessary, becoming a residual network rather than a standard convolutional network.
 
-A rede possui 2 regras de design. A primeira diz que o número de filtros em cada camada é o mesmo e a segunda diz que se o número do mapa de features cair pela metade, os filtros devem compensar dobrando de tamanho, para manter a complexidade no tempo de cada camada.
+The network has two design rules. The first states that the number of filters in each layer is the same, and the second states that if the feature map number is halved, the filters must compensate by doubling in size to maintain complexity in each layer.
 
-Para auxiliar o processo de aprendizado da rede, esta pode ser importada de forma pré-treinada por datasets padrões e apenas ser realizados ajustes nas camadas finais ou um fine tuning do modelo.
+To assist the learning process, this network can be imported as pre-trained on standard datasets, with only adjustments to the final layers or fine-tuning the model.
 
-O modelo para classificação das imagens do dataset utilizado no trabalho foi pré-treinado com as imagens do dataset Imagenet e para que as imagens possam ser utilizadas em escala de cinza, como o modelo acima, a camada inicial do modelo foi substituida por uma que aceite imagens com apenas um canal de cor. Para classificação foi adicionado uma camada densa ao final do modelo, onde será realizado o fine tuning da Resnet.
+The model for classifying images from the dataset used in this work was pre-trained with the Imagenet dataset images, and to use grayscale images like the above model, the initial layer of the model was replaced with one that accepts images with only one color channel. A dense layer was added at the end of the model for classification, where Resnet fine-tuning will be performed.
 
-## Treinamento Resnet-50
+## Resnet-50 Training
 
-Assim como a CNN o treinamento ocorre com base no número de épocas, a quantidade de referências para tomada de decisão e os diferentes otimizadores, que foram testados também com mais e 30 diferentes configurações.
+Like the CNN, training is based on the number of epochs, the number of references for decision-making, and different optimizers, which were also tested with more than 30 different configurations.
 
-### Resultados
+### Results
 
-Buscamos um modelo com melhor acurácia utilizando um número baixo de épocas e encontramos um modelo com resultados acima de 90.9% de acurácia e 0.24 de loss.
-Ao utilizar as 50 épocas, nao obtivemos um resultado melhor do que o original. Obtivemos aqui 90.6% de acurácia e 0.34 de loss.
+We sought a model with better accuracy using a low number of epochs and found a model with results above 90.9% accuracy and 0.24 loss.
+Using 50 epochs did not yield better results than the original. Here, we obtained 90.6% accuracy and 0.34 loss.
 
-## Conclusão & Referências & Vídeo
+## Conclusion & References & Video
 
-A utilização de CNNs para classificação de imagens do dataset apresentou eficácia na classificação tanto em função do tempo quanto acurácia, chegando a mais de 90% de acurácia em 10 épocas, com um loss abaixo de 0.4 no dataset de teste.
+The use of CNNs for classifying images from the dataset was effective in terms of both time and accuracy, reaching over 90% accuracy in 10 epochs, with a loss below 0.4 on the test dataset.
 
-Em comparação com a Resnet-50, após ajustes a CNN apresentou resultado melhor em questão de precisão dos resultados e diminuição do loss, entretanto é necessário maior quantidade de treinamento, que em situações mais complexas ou com maior quantidade de imagens para treinamento pode se tornar um gargalo para o sistema e um atraso na entrega de projetos.
+Compared to Resnet-50, after adjustments, the CNN showed better results in terms of accuracy and loss reduction. However, it requires more training, which in more complex situations or with larger amounts of training images can become a bottleneck for the system and delay project delivery.
 
-A Resnet cumpriu seu objetivo de forma eficiente por necessitar de pouco treinamento, inferindo que o pré-treinamento da rede mesmo que com imagens totalmente diferentes é benéfico para criar filtros genéricos e entender padrões de forma mais rápida, chegando próximo a 90% de acerto já em 2 épocas, porém sendo necessário uma quantidade muito grande de épocas para chegar a 93% de acurácia como o melhor modelo apresentou.
+Resnet performed efficiently by requiring little training, suggesting that pre-training the network, even with completely different images, is beneficial for creating generic filters and understanding patterns more quickly, achieving close to 90% accuracy in just 2 epochs. However, it required a large number of epochs to reach 93% accuracy, as the best model showed.
 
-Um problema que pode ser notado é a dificuldade na classificação de algumas imatgens. A hipótese é que estes erros ocorreram devido a grande diferença no número de amostras do dataset, onde quase metade deste se apresenta em apenas uma classe. Entretanto esse problema não interferiu de maneira tão grave no modelo a ponto de não ser possível realizar a classificação
+A problem noted is the difficulty in classifying some images. The hypothesis is that these errors occurred due to the large difference in the number of samples in the dataset, where almost half of it is in only one class. However, this problem did not significantly affect the model's ability to classify.
 
-Vídeo de apresentação: https://youtu.be/jJI6fs9V7w4?si=zC1o56KrbsCVcJnv
+Presentation video: https://youtu.be/jJI6fs9V7w4?si=zC1o56KrbsCVcJnv
 
-## Referências:
+## References
 
 CNN:
 
@@ -182,17 +182,10 @@ https://keras.io/api/applications/resnet/
 
 ## Meta
 
-Thomas Sponchiado Pastore – [@Thomas_spastore](https://www.instagram.com/thomas_spastore?igsh=Z3RlYjRjaThpNmlu) – thomas.spastore@gmail.com
-
-Thomaz Justo - [@thomaz_justo](https://www.instagram.com/thomaz_justo?igsh=MWE5aDN5enh2Y2E3aw==)
-
-Yuri Kiefer Alves - [@poraiyuri](https://www.instagram.com/poraiyuri?igsh=MTQxdmN1aGNjczEwdQ==)
-
-Lucas Schneider - schneider.lusca@gmail.com
-
-Distributed under the MIT license. See ``LICENSE`` for more information.
-
-[https://github.com/thom01s](https://github.com/thom01s?tab=repositories/)
+Thomas Sponchiado Pastore
+Thomaz Justo
+Yuri Kiefer Alves
+Lucas Schneider
 
 ## Contribuição
 1. Fork it (<https://github.com/thom01s/Chest-X-ray-Classification/fork>)
@@ -200,11 +193,3 @@ Distributed under the MIT license. See ``LICENSE`` for more information.
 4. Commit your changes
 5. Push to the branch
 6. Create a new Pull Request
-
-<!-- Markdown link & img dfn's -->
-[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/datadog-metrics
-[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
-[wiki]: https://github.com/yourname/yourproject/wiki
